@@ -11,7 +11,9 @@ const CartSummary = props => {
       {props.products.map(item =>
         <CartSummaryItem key={item.id} {...item } ></CartSummaryItem>
       )}
+      <div className="font-weight-bold font-italic">Item Total: ${props.totalPrice}</div>
     </div>
+
   );
 };
 

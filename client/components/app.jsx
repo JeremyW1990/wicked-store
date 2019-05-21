@@ -48,6 +48,9 @@ export default class App extends React.Component {
       });
   }
 
+  calculateTotalPirce() {
+    return this.state.cart.reduce((total, current) => total + current.price, 0);
+  }
   componentDidMount() {
     this.getProducts();
     this.getCartItems();
@@ -75,6 +78,7 @@ export default class App extends React.Component {
         <CartSummary
           products = { this.state.cart }
           setView = { this.setView }
+          totalPrice = { this.calculateTotalPirce()}
         >
         </CartSummary>
       );
