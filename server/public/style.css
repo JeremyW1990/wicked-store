@@ -10,7 +10,7 @@
 }
 
 .image {
-    height: 50%;
+    height: 60%;
 }
 
 .image img {
@@ -19,5 +19,12 @@
 
 .price, .short-description {
     font-size: 0.7rem;
+}
+
+
+.product-details .basic-info > *{
+    height: 20%;
+    margin: 5%;
+    font-size: 1rem;
 }
 
