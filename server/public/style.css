@@ -1,0 +1,23 @@
+.product-list {
+    margin-top: 1rem;
+}
+.product-list-item{
+    height: 300px;
+}
+
+.product-item-content {
+    height: 90%;
+}
+
+.image {
+    height: 50%;
+}
+
+.image img {
+    height: 100%;
+}
+
+.price, .short-description {
+    font-size: 0.7rem;
+}
+
