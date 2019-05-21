@@ -34,19 +34,28 @@ class ProductDetails extends React.Component {
             </div>
             <div className="row">
               <div className="image col-sm-6">
-                <img className="mx-auto d-block img-fluid" src={ this.state.product.image } alt="product-image"/>
+                <img className="mx-auto img-fluid" src={ this.state.product.image } alt="product-image"/>
               </div>
+
               <div className="col-sm-6 basic-info">
                 <div className="name font-weight-bold ">
                   {this.state.product.name}
                 </div>
                 <div className="price">
-                                ${this.state.product.price}
+                  ${this.state.product.price}
                 </div>
                 <div className="short-description">
                   {this.state.product.shortDescription}
                 </div>
+
+                <button
+                  className="btn btn-success add-to-cart"
+                  onClick={ () => this.props.addToCart(this.state.product)}>
+                  Add to Cart
+                </button>
+
               </div>
+
             </div>
 
             <div className="long-description col-12 mt-3">
