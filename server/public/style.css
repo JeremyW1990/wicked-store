@@ -1,3 +1,7 @@
+body {
+    height: 100vh;
+}
+
 .title {
     font-size : 3rem;
     font-weight: bold;
@@ -13,11 +17,11 @@
     height: 90%;
 }
 
-.image {
+.product-list .image {
     height: 60%;
 }
 
-.image img {
+.product-list .image img {
     height: 100%;
 }
 
@@ -28,11 +32,21 @@
 
 .basic-info > *{
     height: 20%;
-    margin: 5%;
+    margin: 3%;
     font-size: 1rem;
 }
 
-.product-details .add-to-cart {
-    height: 10%;
+
+.cart-summary-item {
+    height: 150px;
+    font-size: 1.5rem;
+
 }
 
+.cart-summary-item .image {
+    height: 100%;
+}
+.cart-summary-item .image img {
+    height: 100%;
+    
+}

@@ -3,6 +3,7 @@ import React from 'react';
 import Header from './header';
 import ProductList from './product-list';
 import ProductDetails from './product-details';
+import CartSummary from './cart-summary';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -47,6 +48,9 @@ export default class App extends React.Component {
       });
   }
 
+  calculateTotalPirce() {
+    return this.state.cart.reduce((total, current) => total + current.price, 0);
+  }
   componentDidMount() {
     this.getProducts();
     this.getCartItems();
@@ -59,7 +63,7 @@ export default class App extends React.Component {
       </div>
     );
 
-    if (this.state.view.view !== 'catalog') {
+    if (this.state.view.view === 'details') {
       appRenderCmp = (
         <ProductDetails
           params = { this.state.view.params }
@@ -68,12 +72,26 @@ export default class App extends React.Component {
         </ProductDetails>
       );
     }
+
+    if (this.state.view.view === 'cart') {
+      appRenderCmp = (
+        <CartSummary
+          products = { this.state.cart }
+          setView = { this.setView }
+          totalPrice = { this.calculateTotalPirce()}
+        >
+        </CartSummary>
+      );
+    }
+
     return (
       <div className="app container">
         <Header
           logo='logo'
           name='wicked sales'
-          cartItemCount={ this.state.cart.length }>
+          cartItemCount={ this.state.cart.length }
+          setView = { this.setView }
+        >
         </Header>
         { appRenderCmp }
 

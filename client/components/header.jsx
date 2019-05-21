@@ -15,7 +15,7 @@ const Header = props => {
         <div className="cart-item-count ">
           { props.cartItemCount }
         </div>
-        <i className="fas fa-cart-plus"></i>
+        <i className="fas fa-cart-plus" onClick={() => props.setView('cart', {})}></i>
       </div>
 
     </div>
