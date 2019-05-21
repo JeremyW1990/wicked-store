@@ -2,11 +2,20 @@ import React from 'react';
 
 const Header = props => {
   return (
-    <div className="header border">
+    <div className="header border d-flex align-items-center">
+
       <div className="logo">
+
       </div>
-      <div className="name font-weight-bolder">
+      <div className="title ">
         { props.name }
+      </div>
+
+      <div className="ml-auto d-flex align-items-center font-weight-bol">
+        <div className="cart-item-count ">
+          { props.cartItemCount }
+        </div>
+        <i className="fas fa-cart-plus"></i>
       </div>
 
     </div>

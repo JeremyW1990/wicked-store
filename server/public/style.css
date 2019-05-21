@@ -1,3 +1,7 @@
+.title {
+    font-size : 3rem;
+    font-weight: bold;
+}
 .product-list {
     margin-top: 1rem;
 }
@@ -22,9 +26,13 @@
 }
 
 
-.product-details .basic-info > *{
+.basic-info > *{
     height: 20%;
     margin: 5%;
     font-size: 1rem;
+}
+
+.product-details .add-to-cart {
+    height: 10%;
 }
 
