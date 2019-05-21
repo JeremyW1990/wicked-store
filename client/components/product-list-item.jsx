@@ -3,7 +3,7 @@ import React from 'react';
 const ProductListItem = props => {
   return (
 
-    <div className="product-list-item border col-12 col-sm-4 d-flex">
+    <div className="product-list-item border col-12 col-sm-4 d-flex" onClick = {() => props.setView('details', props.id)}>
       <div className="border product-item-content overflow-hidden my-auto container">
         <div className="image">
           <img className="mx-auto d-block img-fluid" src={ props.image } alt="product-image"/>
