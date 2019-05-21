@@ -5,8 +5,8 @@
             'success' => false,
             'error' => $error->getMessage(),
         ];
-        $json_output = json_encode($output);
-        print "<br> Error from error_handler" . $json_output . "<br>";
+        $json_output = json_encode($output['error']);
+        print $json_output;
         return null;
     }
 
