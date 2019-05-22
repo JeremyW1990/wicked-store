@@ -12,6 +12,14 @@ const CartSummary = props => {
         <CartSummaryItem key={item.id} {...item } ></CartSummaryItem>
       )}
       <div className="font-weight-bold font-italic">Item Total: ${props.totalPrice}</div>
+      <button type="button"
+        className="btn btn-primary"
+        onClick={ () => props.setView('checkout', {})}
+        disabled = { props.products.length === 0 }
+      >
+          CHECKOUT
+      </button>
+
     </div>
 
   );

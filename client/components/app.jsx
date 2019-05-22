@@ -4,6 +4,7 @@ import Header from './header';
 import ProductList from './product-list';
 import ProductDetails from './product-details';
 import CartSummary from './cart-summary';
+import CheckoutForm from './checkout-form';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -15,6 +16,7 @@ export default class App extends React.Component {
     };
     this.setView = this.setView.bind(this);
     this.addToCart = this.addToCart.bind(this);
+    this.placeOrder = this.placeOrder.bind(this);
   }
 
   setView(name, params) {
@@ -44,7 +46,25 @@ export default class App extends React.Component {
     })
       .then(res => {
         const cart = this.state.cart.concat(product);
-        this.setState({ cart });
+        this.setState({
+          view: { view: 'catalog', params: {} },
+          cart
+        });
+      });
+  }
+
+  placeOrder(orderInfo) {
+    const postBody = {
+      cart: this.state.cart,
+      orderInfo
+    };
+    fetch('api/orders.php', {
+      method: 'POST',
+      body: JSON.stringify(postBody)
+    })
+      .then(res => res.json())
+      .then(res => {
+        this.setState({ cart: [], view: { view: 'catalog', params: {} } });
       });
   }
 
@@ -56,32 +76,48 @@ export default class App extends React.Component {
     this.getCartItems();
   }
   render() {
-    // [ setView ] = this;
-    let appRenderCmp = (
-      <div className="app container">
-        <ProductList { ...this.state } setView = { this.setView } ></ProductList>
-      </div>
-    );
+    let appRenderCmp;
+    switch (this.state.view.view) {
+      case 'details':
+        appRenderCmp = (
+          <ProductDetails
+            params = { this.state.view.params }
+            setView = { this.setView }
+            addToCart = { this.addToCart } >
+          </ProductDetails>
+        );
+        break;
 
-    if (this.state.view.view === 'details') {
-      appRenderCmp = (
-        <ProductDetails
-          params = { this.state.view.params }
-          setView = { this.setView }
-          addToCart = { this.addToCart } >
-        </ProductDetails>
-      );
-    }
+      case 'cart' :
+        appRenderCmp = (
+          <CartSummary
+            products = { this.state.cart }
+            setView = { this.setView }
+            totalPrice = { this.calculateTotalPirce()}
+          >
+          </CartSummary>
+        );
+        break;
 
-    if (this.state.view.view === 'cart') {
-      appRenderCmp = (
-        <CartSummary
-          products = { this.state.cart }
-          setView = { this.setView }
-          totalPrice = { this.calculateTotalPirce()}
-        >
-        </CartSummary>
-      );
+      case 'checkout':
+        appRenderCmp = (
+          <CheckoutForm placeOrder={this.placeOrder}/>
+        );
+        break;
+
+      case 'catalog':
+        appRenderCmp = (
+          <div className="app container">
+            <ProductList { ...this.state } setView = { this.setView } ></ProductList>
+          </div>
+        );
+        break;
+
+      default:
+        appRenderCmp = (
+          <div>Something went wrong...</div>
+        );
+
     }
 
     return (
