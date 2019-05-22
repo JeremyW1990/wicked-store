@@ -6,8 +6,13 @@
             'error' => $error->getMessage(),
         ];
         $json_output = json_encode($output['error']);
+        print ("MY ERROR HANDLER:");
         print $json_output;
         return null;
+    }
+
+    function startup(){
+        header('Content-Type:application/json');
     }
 
 ?>
