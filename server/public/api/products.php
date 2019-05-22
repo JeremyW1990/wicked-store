@@ -15,7 +15,7 @@
 
   require_once('./db_connection.php');
 
-  $query = "SELECT * FROM `products` WHERE `name` = 'Shake Weight'";
+  $query = "SELECT * FROM `products`";
   $result = mysqli_query($conn, $query);
 
   if (!$result) {
@@ -24,13 +24,11 @@
 
   $output = [];
   while ($row = mysqli_fetch_assoc($result)) {
-    array_push($output, $row );
+    $output[] = $row;
   }
   
   $json_output = json_encode($output);
-  print_r($json_output);  
 
-  mysqli_close($conn);
 
 
 ?>
