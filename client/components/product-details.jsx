@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Carousel from './carousel';
+
 class ProductDetails extends React.Component {
 
   constructor(props) {
@@ -16,8 +18,12 @@ class ProductDetails extends React.Component {
 
     })
       .then(res => res.json())
-      .then(product => {
-        this.setState({ product: product[0] });
+      .then(res => {
+        const product = res[0];
+        if (product.gallery !== null) {
+          product.gallery = [...product.gallery.split(',')];
+        }
+        this.setState({ product });
       })
       .catch(error => error);
   }
@@ -33,8 +39,10 @@ class ProductDetails extends React.Component {
               <button type="button" className="btn btn-default" onClick={ () => this.props.setView('catalog', {})} >&lt; Back to catalog</button>
             </div>
             <div className="row">
-              <div className="image col-sm-6">
-                <img className="mx-auto img-fluid" src={ this.state.product.image } alt="product-image"/>
+              <div className="col-sm-6">
+                { this.state.product.gallery !== null
+                  ? <Carousel images={this.state.product.gallery}/>
+                  : <img className="mx-auto img-fluid" src={ this.state.product.image } alt="product-image"/> }
               </div>
 
               <div className="col-sm-6 basic-info">

@@ -50,3 +50,48 @@ body {
     height: 100%;
     
 }
+
+
+
+.carousel .container {
+    display: flex;
+    height : 600px;
+    width : 800px;
+    border: 3px black solid;
+    position : relative;
+  }
+  
+  .carousel  img {
+    height: 300px;
+    width: 100%;
+  }
+  
+  .carousel  .button-left, .button-right, .round-buttons  {
+    position: absolute;
+  }
+  
+  .carousel  .button-left, .button-right {
+    top: 40%;
+    font-size: 1rem;
+    color: brown;
+  }
+  
+  .carousel  .button-left {
+    left: 0;
+  
+  }
+  .carousel  .button-right {
+    right: 0;
+  
+  }
+  
+  .carousel  .round-buttons{
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .carousel  .round-buttons i {
+    margin: 0 5px;
+  }
+  
