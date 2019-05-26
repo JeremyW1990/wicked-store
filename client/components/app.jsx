@@ -25,7 +25,9 @@ export default class App extends React.Component {
 
   getProducts() {
     fetch('api/products.php', { method: 'GET' })
-      .then(res => res.json())
+      .then(res => {
+        return res.json();
+      })
       .then(products => {
         this.setState({ products });
       });
@@ -69,7 +71,7 @@ export default class App extends React.Component {
   }
 
   calculateTotalPirce() {
-    return this.state.cart.reduce((total, current) => total + current.price, 0);
+    return this.state.cart.reduce((total, current) => total + parseInt(current.price), 0);
   }
   componentDidMount() {
     this.getProducts();

@@ -17,7 +17,7 @@ class ProductDetails extends React.Component {
     })
       .then(res => res.json())
       .then(product => {
-        this.setState({ product });
+        this.setState({ product: product[0] });
       })
       .catch(error => error);
   }

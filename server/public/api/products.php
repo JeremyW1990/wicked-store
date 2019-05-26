@@ -1,6 +1,6 @@
 <?php
 
-// header('Content-Type: application/json');
+// 
 
 // if (empty($_GET['id'])) {
 //   readfile('dummy-products-list.json');
@@ -20,7 +20,7 @@
   require_once('./db_connection.php');
 
   $whereClause = '';
-  $id = $_GET['id'];
+  $id = isset($_GET['id']) ? $_GET['id'] : '';
   if (!empty($id)) {
     if (is_numeric($id)){
       $whereClause = "WHERE `id`=" . $id;
@@ -48,5 +48,5 @@
   
   $json_output = json_encode($output);
   
-  print_r($json_output);
+  print($json_output);
 ?>
