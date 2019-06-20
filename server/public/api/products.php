@@ -20,10 +20,9 @@
   require_once('./db_connection.php');
 
   $whereClause = '';
-  $id = $_GET['id'];
-  if (!empty($id)) {
-    if (is_numeric($id)){
-      $whereClause = "WHERE `id`=" . $id;
+  if (!empty($_GET['id'])) {
+    if (is_numeric($_GET['id'])){
+      $whereClause = "WHERE `id`=" . $_GET['id'];
     } 
     else {
       throw new Exception ('id needs to be a number');
