@@ -1,6 +1,6 @@
 <?php
 
-// header('Content-Type: application/json');
+// 
 
 // if (empty($_GET['id'])) {
 //   readfile('dummy-products-list.json');
@@ -19,17 +19,26 @@
 
   require_once('./db_connection.php');
 
-  $whereClause = '';
-  if (!empty($_GET['id'])) {
-    if (is_numeric($_GET['id'])){
-      $whereClause = "WHERE `id`=" . $_GET['id'];
+
+  $id = isset($_GET['id']) ? $_GET['id'] : '';
+  if (!empty($id)) { 
+    if (is_numeric($id)){
+      $query = "SELECT  `p`.`id`, `p`.`name`,`p`.`image`,  `p`.`shortDescription`,  `p`.`price`,
+      GROUP_CONCAT(`i`.`url`) AS `gallery`
+      FROM `products` AS `p`
+      LEFT JOIN `images` AS `i` 
+      ON `i`.`products_id` = `p`.`id` 
+      WHERE`p`.`id` = $id
+      GROUP BY `i`.`products_id`";
     } 
     else {
       throw new Exception ('id needs to be a number');
     }
-  };
+  } 
+  else {
+    $query = "SELECT  * FROM `products`";
+  }
 
-  $query = "SELECT * FROM `products`" . $whereClause;
   $result = mysqli_query($conn, $query);
 
   if (!$result) {
@@ -47,5 +56,5 @@
   
   $json_output = json_encode($output);
   
-  print_r($json_output);
+  print($json_output);
 ?>

@@ -11,7 +11,7 @@ const CartSummary = props => {
       {props.products.map(item =>
         <CartSummaryItem key={item.id} {...item } ></CartSummaryItem>
       )}
-      <div className="font-weight-bold font-italic">Item Total: ${props.totalPrice}</div>
+      <div className="font-weight-bold font-italic">Item Total: ${(props.totalPrice / 100).toFixed(2)}</div>
       <button type="button"
         className="btn btn-primary"
         onClick={ () => props.setView('checkout', {})}
