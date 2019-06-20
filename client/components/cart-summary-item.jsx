@@ -14,7 +14,7 @@ const CartSummaryItem = props => {
           {props.name}
         </div>
         <div className="price">
-                    ${props.price}
+                    ${(props.price / 100).toFixed(2)}
         </div>
         <div className="short-description">
           {props.shortDescription}
