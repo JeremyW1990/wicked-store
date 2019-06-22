@@ -6,7 +6,12 @@ const ProductList = props => {
     <div className="product-list">
       <div className="row">
         {props.products.map(item =>
-          <ProductListItem key={item.id} {...item } setView = {(name, id) => props.setView(name, id) } ></ProductListItem>
+          <ProductListItem
+            key={item.id}
+            {...item }
+            setView = {(name, id) => props.setView(name, id) } >
+
+          </ProductListItem>
         )}
       </div>
     </div>
