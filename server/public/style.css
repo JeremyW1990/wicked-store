@@ -1,20 +1,35 @@
 body {
     height: 100vh;
+    background-color: grey;
 }
 
-.title {
+/* Header */
+.header .title {
     font-size : 3rem;
     font-weight: bold;
 }
-.product-list {
-    margin-top: 1rem;
+
+.cart-item-count {
+  margin-left : 0.5rem;
+}
+
+
+/* Product List */
+.product-list .row {
+  margin: 1rem 0;
 }
 .product-list-item{
     height: 300px;
+    padding: 2px;
 }
 
+
 .product-item-content {
-    height: 90%;
+    height: 100%;
+}
+
+.product-item-content .name {
+  font-size: 1.4rem;
 }
 
 .product-list .image {
@@ -25,73 +40,79 @@ body {
     height: 100%;
 }
 
-.price, .short-description {
-    font-size: 0.7rem;
+.short-description {
+    font-size: 0.9rem;
 }
 
-
-.basic-info > *{
-    height: 20%;
-    margin: 3%;
-    font-size: 1rem;
+/* product-detail */
+.product-details{
+  height: 100%;;
 }
 
+.basic-info {
+  justify-content: space-between
 
+}
+
+.basic-info > div{
+  margin-top: 1rem;
+}
+.basic-info .add-to-cart {
+  margin: auto auto 0;
+  width: 40%;
+}
+
+/* cart */
 .cart-summary-item {
-    height: 150px;
     font-size: 1.5rem;
-
 }
 
-.cart-summary-item .image {
-    height: 100%;
-}
+
 .cart-summary-item .image img {
-    height: 100%;
-    
+    max-width: 100%;
 }
 
 
+/* carousel */
 
-.carousel .container {
-    display: flex;
-    height : 600px;
-    width : 800px;
-    border: 3px black solid;
-    position : relative;
-  }
-  
-  .carousel  img {
-    height: 300px;
-    width: 100%;
-  }
-  
-  .carousel  .button-left, .button-right, .round-buttons  {
-    position: absolute;
-  }
-  
-  .carousel  .button-left, .button-right {
-    top: 40%;
-    font-size: 1rem;
-    color: brown;
-  }
-  
-  .carousel  .button-left {
-    left: 0;
-  
-  }
-  .carousel  .button-right {
-    right: 0;
-  
-  }
-  
-  .carousel  .round-buttons{
-    bottom: 0;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  
-  .carousel  .round-buttons i {
-    margin: 0 5px;
-  }
+.carousel {
+
+
+}
+.carousel  img {
+  display: block;
+  margin:auto;
+  max-width: 100%;
+  height: auto;
+
+}
+
+.carousel  .button-left, .button-right, .round-buttons  {
+  position: absolute;
+}
+
+.carousel  .button-left, .button-right {
+  top: 40%;
+  font-size: 1rem;
+  color: brown;
+}
+
+.carousel  .button-left {
+  left: 0;
+
+}
+.carousel  .button-right {
+  right: 0;
+
+}
+
+.carousel  .round-buttons{
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.carousel  .round-buttons i {
+  margin: 0 5px;
+}
   

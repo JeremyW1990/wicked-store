@@ -11,7 +11,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       products: [],
-      view: { view: 'catalog', params: {} },
+      view: { view: 'checkout', params: {} }, // catalog,checkout
       cart: []
     };
     this.setView = this.setView.bind(this);
@@ -25,9 +25,7 @@ export default class App extends React.Component {
 
   getProducts() {
     fetch('api/products.php', { method: 'GET' })
-      .then(res => {
-        return res.json();
-      })
+      .then(res => res.json())
       .then(products => {
         this.setState({ products });
       });
@@ -77,6 +75,7 @@ export default class App extends React.Component {
     this.getProducts();
     this.getCartItems();
   }
+
   render() {
     let appRenderCmp;
     switch (this.state.view.view) {
@@ -109,9 +108,7 @@ export default class App extends React.Component {
 
       case 'catalog':
         appRenderCmp = (
-          <div className="app container">
-            <ProductList { ...this.state } setView = { this.setView } ></ProductList>
-          </div>
+          <ProductList { ...this.state } setView = { this.setView } ></ProductList>
         );
         break;
 
@@ -125,14 +122,10 @@ export default class App extends React.Component {
     return (
       <div className="app container">
         <Header
-          logo='logo'
-          name='wicked sales'
+          name="Jeremy's Wicked-Store"
           cartItemCount={ this.state.cart.length }
-          setView = { this.setView }
-        >
-        </Header>
+          setView = { this.setView }/>
         { appRenderCmp }
-
       </div>
     );
   }

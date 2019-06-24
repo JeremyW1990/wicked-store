@@ -1,54 +1,188 @@
 import React from 'react';
+import { Col, Row, Button, Form, FormGroup, Label, Input, FormFeedback } from 'reactstrap';
 
 export default class CheckoutForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      creditCardNumber: '',
-      address: ''
+      isInputValid: {
+        // use status 'null' here to present 'not-touched'
+        // 'null' will not trigger input validation
+        firstnameValid: null,
+        lastnameValid: null,
+        addressValid: null,
+        cityValid: null,
+        stateValid: null,
+        zipValid: null,
+        checkBoxValid: null
+      },
+      firstname: '',
+      lastname: '',
+      address: '',
+      city: '',
+      state: '',
+      zip: '',
+      checkBox: false,
+      formValidated: false
+    };
+    this.validationRules = {
+      firstname: { required: true },
+      lastname: { required: true },
+      address: { required: true },
+      city: { required: true },
+      state: { required: true },
+      zip: {
+        required: true,
+        length: 5
+      }
+
     };
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.onSubmitHandler = this.onSubmitHandler.bind(this);
   }
 
   onChangeHandler(event) {
-    this.setState({ [event.target.name]: event.target.value });
+    const filed = event.target.name;
+
+    if (filed === 'check') {
+      this.setState({
+        checkBox: !this.state.checkBox,
+        isInputValid: {
+          ...this.state.isInputValid,
+          checkBoxValid: !this.state.checkBox
+        }
+      });
+      return;
+    }
+
+    this.setState({
+      [filed]: event.target.value
+
+    }, () => {
+      this.setState({
+        ...this.state,
+        isInputValid: {
+          ...this.state.isInputValid,
+          [filed + 'Valid']: this.isFieldValidated(filed)
+        }
+      });
+    });
   }
 
   onSubmitHandler(event) {
     event.preventDefault();
-    this.props.placeOrder(this.state);
+    this.isFormValidated();
+    // this.props.placeOrder(this.state);
+
+  }
+
+  isFieldValidated(field) {
+    if (this.validationRules[field]['required'] && this.state[field].trim() === '') return false;
+    if (this.validationRules[field]['length'] && this.state[field].trim().length !== this.validationRules[field]['length']) return false;
+
+    return true;
+  }
+
+  isFormValidated() {
+    const isInputValid = { ...this.state.isInputValid };
+    let formValidated = true;
+    for (const field in this.state.isInputValid) {
+      if (!this.state.isInputValid[field]) { // whenever it is null or false, we think the input is invalid
+        isInputValid[field] = false;
+        formValidated = false;
+      }
+    }
+
+    this.setState({ isInputValid, formValidated });
   }
   render() {
-    const { name, creditCardNumber, address } = this.state;
+    const { firstname, lastname, address, city, state, zip, checkBox } = this.state;
     const { onChangeHandler, onSubmitHandler } = this;
+    const { firstnameValid, lastnameValid, addressValid, cityValid, stateValid, zipValid, checkBoxValid } = this.state.isInputValid;
     return (
       <React.Fragment>
         <h1>Checkout</h1>
-        <form onSubmit = {onSubmitHandler}>
-          <div className="form-group">
-            <label htmlFor="name ">Name</label>
-            <input type="text" className="form-control" id="name" placeholder="Name"
-              name="name" value={name} onChange={onChangeHandler} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="creditcard">Credit Card</label>
-            <input type="number" className="form-control" id="creditcard" placeholder="Credit Card"
-              name="creditCardNumber" value={creditCardNumber} onChange={onChangeHandler}/>
-          </div>
-          <div className="form-group">
-            <label htmlFor="shopping_address">Shopping Address</label>
-            <textarea className="form-control" id="shopping_address" rows="3"
-              name="address" value={address} onChange={onChangeHandler}
-            ></textarea>
-          </div>
-          <button
-            type="submit"
-            className="btn btn-primary"
-          >Place Order</button>
-        </form>
 
+        <Form>
+          <Row form>
+            <Col md={6}>
+              <FormGroup>
+                <Label for="firstName">First Name</Label>
+                <Input
+                  value={firstname}
+                  invalid = {firstnameValid === false}
+                  type="text"
+                  name="firstname"
+                  id="firstName"
+                  placeholder="First name"
+                  onChange={onChangeHandler}/>
+                {firstnameValid === false ? <FormFeedback>First Name is required</FormFeedback> : null}
+              </FormGroup>
+            </Col>
+            <Col md={6}>
+              <FormGroup>
+                <Label for="lastName">Last Name</Label>
+                <Input
+                  value={lastname}
+                  invalid = {lastnameValid === false}
+                  type="text" name="lastname" id="lastName" placeholder="Last name"
+                  onChange={onChangeHandler} />
+                {lastnameValid === false ? <FormFeedback>Last Name is required</FormFeedback> : null}
+              </FormGroup>
+
+            </Col>
+          </Row>
+          <FormGroup>
+            <Label for="Address">Address</Label>
+            <Input
+              value={address}
+              invalid = {addressValid === false}
+              type="text" name="address" id="Address" placeholder="1234 Main St"
+              onChange={onChangeHandler}/>
+            {addressValid === false ? <FormFeedback>Address is required</FormFeedback> : null}
+          </FormGroup>
+
+          <Row form>
+            <Col md={6}>
+              <FormGroup>
+                <Label for="City">City</Label>
+                <Input
+                  value={city}
+                  invalid = {cityValid === false}
+                  type="text" name="city" id="City"
+                  onChange={onChangeHandler}/>
+                {cityValid === false ? <FormFeedback>City is required</FormFeedback> : null}
+              </FormGroup>
+            </Col>
+            <Col md={4}>
+              <FormGroup>
+                <Label for="State">State</Label>
+                <Input
+                  value={state}
+                  invalid = {stateValid === false}
+                  type="text" name="state" id="State"
+                  onChange={onChangeHandler}/>
+                {stateValid === false ? <FormFeedback>State is required</FormFeedback> : null}
+              </FormGroup>
+            </Col>
+            <Col md={2}>
+              <FormGroup>
+                <Label for="Zip">Zip</Label>
+                <Input
+                  value={zip}
+                  invalid = {zipValid === false}
+                  type="number" name="zip" id="Zip"
+                  onChange={onChangeHandler}/>
+                {zipValid === false ? <FormFeedback>{zip.trim() === '' ? 'Zip is required' : 'Zip has to be 5 digital length'}</FormFeedback> : null}
+              </FormGroup>
+            </Col>
+          </Row>
+          <FormGroup check>
+            <Input invalid = {checkBoxValid === false} checked={checkBox} type="checkbox" name="check" id="Check" onChange={onChangeHandler}/>
+            <Label for="Check" check>I understand that my personal information above will not be saved or sent.</Label>
+          </FormGroup>
+          <Button onClick={onSubmitHandler}>Sign in</Button>
+        </Form>
       </React.Fragment>
     );
   }

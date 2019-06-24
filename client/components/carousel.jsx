@@ -55,10 +55,10 @@ export default class Carousel extends React.Component {
       <div className="carousel">
         <img src={this.props.images[this.state.currentIndex]} alt=""/>
         <button className="button-left" onClick={() => this.clickHander(-1, 'shift')}>&lt;</button>
+        <button className="button-right" onClick={() => this.clickHander(+1, 'shift')}>&gt;</button>
         <div className="round-buttons">
           {roundButtons}
         </div>
-        <button className="button-right" onClick={() => this.clickHander(+1, 'shift')}>&gt;</button>
       </div>
     );
   }

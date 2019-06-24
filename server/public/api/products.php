@@ -19,6 +19,7 @@
 
   require_once('./db_connection.php');
 
+
   $id = isset($_GET['id']) ? $_GET['id'] : '';
   if (!empty($id)) { 
     if (is_numeric($id)){
