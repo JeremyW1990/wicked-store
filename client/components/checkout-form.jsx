@@ -16,13 +16,15 @@ export default class CheckoutForm extends React.Component {
         zipValid: null,
         checkBoxValid: null
       },
-      firstname: '',
-      lastname: '',
-      address: '',
-      city: '',
-      state: '',
-      zip: '',
-      checkBox: false,
+      formValue: {
+        firstname: '',
+        lastname: '',
+        address: '',
+        city: '',
+        state: '',
+        zip: '',
+        checkBox: false
+      },
       formValidated: false
     };
     this.validationRules = {
@@ -46,17 +48,25 @@ export default class CheckoutForm extends React.Component {
 
     if (filed === 'check') {
       this.setState({
-        checkBox: !this.state.checkBox,
+        ...this.state,
+        formValue: {
+          ...this.state.formValue,
+          checkBox: !this.state.formValue.checkBox
+        },
         isInputValid: {
           ...this.state.isInputValid,
-          checkBoxValid: !this.state.checkBox
+          checkBoxValid: !this.state.formValue.checkBox
         }
       });
       return;
     }
 
     this.setState({
-      [filed]: event.target.value
+      ...this.state,
+      formValue: {
+        ...this.state.formValue,
+        [filed]: event.target.value
+      }
 
     }, () => {
       this.setState({
@@ -72,13 +82,13 @@ export default class CheckoutForm extends React.Component {
   onSubmitHandler(event) {
     event.preventDefault();
     this.isFormValidated();
-    // this.props.placeOrder(this.state);
+    this.props.placeOrder(this.state.formValue);
 
   }
 
   isFieldValidated(field) {
-    if (this.validationRules[field]['required'] && this.state[field].trim() === '') return false;
-    if (this.validationRules[field]['length'] && this.state[field].trim().length !== this.validationRules[field]['length']) return false;
+    if (this.validationRules[field]['required'] && this.state.formValue[field].trim() === '') return false;
+    if (this.validationRules[field]['length'] && this.state.formValue[field].trim().length !== this.validationRules[field]['length']) return false;
 
     return true;
   }
@@ -96,7 +106,7 @@ export default class CheckoutForm extends React.Component {
     this.setState({ isInputValid, formValidated });
   }
   render() {
-    const { firstname, lastname, address, city, state, zip, checkBox } = this.state;
+    const { firstname, lastname, address, city, state, zip, checkBox } = this.state.formValue;
     const { onChangeHandler, onSubmitHandler } = this;
     const { firstnameValid, lastnameValid, addressValid, cityValid, stateValid, zipValid, checkBoxValid } = this.state.isInputValid;
     return (
@@ -181,7 +191,7 @@ export default class CheckoutForm extends React.Component {
             <Input invalid = {checkBoxValid === false} checked={checkBox} type="checkbox" name="check" id="Check" onChange={onChangeHandler}/>
             <Label for="Check" check>I understand that my personal information above will not be saved or sent.</Label>
           </FormGroup>
-          <Button onClick={onSubmitHandler}>Sign in</Button>
+          <Button onClick={onSubmitHandler}>Next</Button>
         </Form>
       </React.Fragment>
     );
