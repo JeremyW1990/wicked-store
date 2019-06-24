@@ -1,112 +1,187 @@
 import React from 'react';
-import { Col, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Col, Row, Button, Form, FormGroup, Label, Input, FormFeedback } from 'reactstrap';
 
 export default class CheckoutForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      creditCardNumber: '',
-      address: ''
+      isInputValid: {
+        // use status 'null' here to present 'not-touched'
+        // 'null' will not trigger input validation
+        firstnameValid: null,
+        lastnameValid: null,
+        addressValid: null,
+        cityValid: null,
+        stateValid: null,
+        zipValid: null,
+        checkBoxValid: null
+      },
+      firstname: '',
+      lastname: '',
+      address: '',
+      city: '',
+      state: '',
+      zip: '',
+      checkBox: false,
+      formValidated: false
+    };
+    this.validationRules = {
+      firstname: { required: true },
+      lastname: { required: true },
+      address: { required: true },
+      city: { required: true },
+      state: { required: true },
+      zip: {
+        required: true,
+        length: 5
+      }
+
     };
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.onSubmitHandler = this.onSubmitHandler.bind(this);
   }
 
   onChangeHandler(event) {
-    this.setState({ [event.target.name]: event.target.value });
+    const filed = event.target.name;
+
+    if (filed === 'check') {
+      this.setState({
+        checkBox: !this.state.checkBox,
+        isInputValid: {
+          ...this.state.isInputValid,
+          checkBoxValid: !this.state.checkBox
+        }
+      });
+      return;
+    }
+
+    this.setState({
+      [filed]: event.target.value
+
+    }, () => {
+      this.setState({
+        ...this.state,
+        isInputValid: {
+          ...this.state.isInputValid,
+          [filed + 'Valid']: this.isFieldValidated(filed)
+        }
+      });
+    });
   }
 
   onSubmitHandler(event) {
     event.preventDefault();
-    this.props.placeOrder(this.state);
+    this.isFormValidated();
+    // this.props.placeOrder(this.state);
+
+  }
+
+  isFieldValidated(field) {
+    if (this.validationRules[field]['required'] && this.state[field].trim() === '') return false;
+    if (this.validationRules[field]['length'] && this.state[field].trim().length !== this.validationRules[field]['length']) return false;
+
+    return true;
+  }
+
+  isFormValidated() {
+    const isInputValid = { ...this.state.isInputValid };
+    let formValidated = true;
+    for (const field in this.state.isInputValid) {
+      if (!this.state.isInputValid[field]) { // whenever it is null or false, we think the input is invalid
+        isInputValid[field] = false;
+        formValidated = false;
+      }
+    }
+
+    this.setState({ isInputValid, formValidated });
   }
   render() {
-    // const { name, creditCardNumber, address } = this.state;
-    // const { onChangeHandler, onSubmitHandler } = this;
+    const { firstname, lastname, address, city, state, zip, checkBox } = this.state;
+    const { onChangeHandler, onSubmitHandler } = this;
+    const { firstnameValid, lastnameValid, addressValid, cityValid, stateValid, zipValid, checkBoxValid } = this.state.isInputValid;
     return (
       <React.Fragment>
         <h1>Checkout</h1>
+
         <Form>
-          <FormGroup row>
-            <Label for="exampleEmail" sm={2}>Email</Label>
-            <Col sm={10}>
-              <Input type="email" name="email" id="exampleEmail" placeholder="with a placeholder" />
-            </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Label for="examplePassword" sm={2}>Password</Label>
-            <Col sm={10}>
-              <Input type="password" name="password" id="examplePassword" placeholder="password placeholder" />
-            </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Label for="exampleSelect" sm={2}>Select</Label>
-            <Col sm={10}>
-              <Input type="select" name="select" id="exampleSelect" />
-            </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Label for="exampleSelectMulti" sm={2}>Select Multiple</Label>
-            <Col sm={10}>
-              <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple />
-            </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Label for="exampleText" sm={2}>Text Area</Label>
-            <Col sm={10}>
-              <Input type="textarea" name="text" id="exampleText" />
-            </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Label for="exampleFile" sm={2}>File</Label>
-            <Col sm={10}>
-              <Input type="file" name="file" id="exampleFile" />
-              <FormText color="muted">
-              This is some placeholder block-level help text for the above input.
-              It&apos;s a bit lighter and easily wraps to a new line.
-              </FormText>
-            </Col>
-          </FormGroup>
-          <FormGroup tag="fieldset" row>
-            <legend className="col-form-label col-sm-2">Radio Buttons</legend>
-            <Col sm={10}>
-              <FormGroup check>
-                <Label check>
-                  <Input type="radio" name="radio2" />{' '}
-                Option one is this and that—be sure to include why it&apos;s great
-                </Label>
-              </FormGroup>
-              <FormGroup check>
-                <Label check>
-                  <Input type="radio" name="radio2" />{' '}
-                Option two can be something else and selecting it will deselect option one
-                </Label>
-              </FormGroup>
-              <FormGroup check disabled>
-                <Label check>
-                  <Input type="radio" name="radio2" disabled />{' '}
-                Option three is disabled
-                </Label>
+          <Row form>
+            <Col md={6}>
+              <FormGroup>
+                <Label for="firstName">First Name</Label>
+                <Input
+                  value={firstname}
+                  invalid = {firstnameValid === false}
+                  type="text"
+                  name="firstname"
+                  id="firstName"
+                  placeholder="First name"
+                  onChange={onChangeHandler}/>
+                {firstnameValid === false ? <FormFeedback>First Name is required</FormFeedback> : null}
               </FormGroup>
             </Col>
+            <Col md={6}>
+              <FormGroup>
+                <Label for="lastName">Last Name</Label>
+                <Input
+                  value={lastname}
+                  invalid = {lastnameValid === false}
+                  type="text" name="lastname" id="lastName" placeholder="Last name"
+                  onChange={onChangeHandler} />
+                {lastnameValid === false ? <FormFeedback>Last Name is required</FormFeedback> : null}
+              </FormGroup>
+
+            </Col>
+          </Row>
+          <FormGroup>
+            <Label for="Address">Address</Label>
+            <Input
+              value={address}
+              invalid = {addressValid === false}
+              type="text" name="address" id="Address" placeholder="1234 Main St"
+              onChange={onChangeHandler}/>
+            {addressValid === false ? <FormFeedback>Address is required</FormFeedback> : null}
           </FormGroup>
-          <FormGroup row>
-            <Label for="checkbox2" sm={2}>Checkbox</Label>
-            <Col sm={{ size: 10 }}>
-              <FormGroup check>
-                <Label check>
-                  <Input type="checkbox" id="checkbox2" />{' '}
-                Check me out
-                </Label>
+
+          <Row form>
+            <Col md={6}>
+              <FormGroup>
+                <Label for="City">City</Label>
+                <Input
+                  value={city}
+                  invalid = {cityValid === false}
+                  type="text" name="city" id="City"
+                  onChange={onChangeHandler}/>
+                {cityValid === false ? <FormFeedback>City is required</FormFeedback> : null}
               </FormGroup>
             </Col>
-          </FormGroup>
-          <FormGroup check row>
-            <Col sm={{ size: 10, offset: 2 }}>
-              <Button>Submit</Button>
+            <Col md={4}>
+              <FormGroup>
+                <Label for="State">State</Label>
+                <Input
+                  value={state}
+                  invalid = {stateValid === false}
+                  type="text" name="state" id="State"
+                  onChange={onChangeHandler}/>
+                {stateValid === false ? <FormFeedback>State is required</FormFeedback> : null}
+              </FormGroup>
             </Col>
+            <Col md={2}>
+              <FormGroup>
+                <Label for="Zip">Zip</Label>
+                <Input
+                  value={zip}
+                  invalid = {zipValid === false}
+                  type="number" name="zip" id="Zip"
+                  onChange={onChangeHandler}/>
+                {zipValid === false ? <FormFeedback>{zip.trim() === '' ? 'Zip is required' : 'Zip has to be 5 digital length'}</FormFeedback> : null}
+              </FormGroup>
+            </Col>
+          </Row>
+          <FormGroup check>
+            <Input invalid = {checkBoxValid === false} checked={checkBox} type="checkbox" name="check" id="Check" onChange={onChangeHandler}/>
+            <Label for="Check" check>I understand that my personal information above will not be saved or sent.</Label>
           </FormGroup>
+          <Button onClick={onSubmitHandler}>Sign in</Button>
         </Form>
       </React.Fragment>
     );
