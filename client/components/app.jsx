@@ -11,8 +11,8 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       products: [],
-      view: { view: 'checkout', params: {} }, // details, cart, checkout, catalog
-      cart: []
+      cart: [],
+      view: { view: 'catalog', params: {} } // details, cart, checkout, catalog
     };
     this.setView = this.setView.bind(this);
     this.addToCart = this.addToCart.bind(this);
@@ -31,21 +31,28 @@ export default class App extends React.Component {
       });
   }
 
-  getCartItems() {
-    fetch('api/cart.php', { method: 'GET' })
-      .then(res => res.json())
-      .then(cart => {
-        this.setState({ cart });
-      });
-  }
-
   addToCart(product) {
     fetch('api/cart.php', {
       method: 'POST',
       product
     })
       .then(res => {
-        const cart = this.state.cart.concat(product);
+        let cart = [...this.state.cart];
+        let newProduct = true;
+        cart = cart.map(cartItem => {
+          if (cartItem.id === product.id) {
+            newProduct = false;
+            return {
+              ...cartItem,
+              quantity: cartItem.quantity + 1
+            };
+          }
+          return cartItem;
+        });
+        if (newProduct) {
+          product.quantity = 1;
+          cart = this.state.cart.concat(product);
+        }
         this.setState({
           view: { view: 'catalog', params: {} },
           cart
@@ -69,11 +76,14 @@ export default class App extends React.Component {
   }
 
   calculateTotalPirce() {
-    return this.state.cart.reduce((total, current) => total + parseInt(current.price), 0);
+    return this.state.cart.reduce((total, current) => total + parseFloat(current.price * current.quantity), 0);
+  }
+
+  calculateTotalItemsInCart() {
+    return this.state.cart.reduce((total, current) => total + parseInt(current.quantity), 0);
   }
   componentDidMount() {
     this.getProducts();
-    this.getCartItems();
   }
 
   render() {
@@ -123,7 +133,7 @@ export default class App extends React.Component {
       <div className="app container">
         <Header
           name="Jeremy's Wicked-Store"
-          cartItemCount={ this.state.cart.length }
+          cartItemCount={ this.calculateTotalItemsInCart() }
           setView = { this.setView }/>
         { appRenderCmp }
       </div>
