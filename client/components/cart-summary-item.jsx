@@ -13,8 +13,11 @@ const CartSummaryItem = props => {
         <div className="name font-weight-bold">
           {props.name}
         </div>
+        <div className="quantity">
+          Quantity: {props.quantity}
+        </div>
         <div className="price">
-            ${(props.price / 100).toFixed(2)}
+            ${(props.price * props.quantity / 100).toFixed(2)}
         </div>
         <div className="short-description">
           {props.shortDescription}

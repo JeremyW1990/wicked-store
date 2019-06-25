@@ -81,8 +81,9 @@ export default class CheckoutForm extends React.Component {
 
   onSubmitHandler(event) {
     event.preventDefault();
-    this.isFormValidated();
-    this.props.placeOrder(this.state.formValue);
+    if (this.isFormValidated()) {
+      this.props.placeOrder(this.state.formValue);
+    }
 
   }
 
@@ -104,6 +105,7 @@ export default class CheckoutForm extends React.Component {
     }
 
     this.setState({ isInputValid, formValidated });
+    return formValidated;
   }
   render() {
     const { firstname, lastname, address, city, state, zip, checkBox } = this.state.formValue;
