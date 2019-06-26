@@ -5,8 +5,28 @@ body {
 
 /* Header */
 .header .title {
-    font-size : 3rem;
+    font-size : 5vw;
     font-weight: bold;
+    /* text-shadow design is from 
+    https://designshack.net/articles/css/12-fun-css-text-shadows-you-can-copy-and-paste/ 
+    Mark Dotto’s Seriously 3D Text
+    */
+    text-shadow: 0 1px 0 #ccc, 
+               0 2px 0 #c9c9c9,
+               0 3px 0 #bbb,
+               0 4px 0 #b9b9b9,
+               0 5px 0 #aaa,
+               0 6px 1px rgba(0,0,0,.1),
+               0 0 5px rgba(0,0,0,.1),
+               0 1px 3px rgba(0,0,0,.3),
+               0 3px 5px rgba(0,0,0,.2),
+               0 5px 10px rgba(0,0,0,.25),
+               0 10px 10px rgba(0,0,0,.2),
+               0 20px 20px rgba(0,0,0,.15);
+}
+
+.cart-btn {
+  font-size:1.3vw;
 }
 
 .cart-item-count {
@@ -34,6 +54,7 @@ body {
 
 .product-list .image {
     height: 60%;
+    
 }
 
 .product-list .image img {
@@ -72,6 +93,11 @@ body {
     max-width: 100%;
 }
 
+/* order-confirm */
+
+.deliver-info i {
+  font-size: 10vw;
+}
 
 /* carousel */
 
@@ -83,6 +109,7 @@ body {
   display: block;
   margin:auto;
   max-width: 100%;
+  max-height: 30vh;
   height: auto;
 
 }

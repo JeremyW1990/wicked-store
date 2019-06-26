@@ -10,13 +10,11 @@
 
 // $output = file_get_contents('./dummy-products-list.json');
 // print $output;
-
   require_once('./functions.php');
   set_exception_handler('error_handler');
   startup();
 
   require_once('./db_connection.php');
-
 
   $id = isset($_GET['id']) ? $_GET['id'] : ''; //prevent from throwing error when no 'id'
   if (!empty($id)) { 
@@ -39,6 +37,10 @@
   }
 
   $result = mysqli_query($conn, $query);
+
+  if (mysqli_errno($conn)){
+    print_r(mysqli_error($conn));
+  }
 
   if (!$result) {
     throw new Exception (mysqli_error($conn));

@@ -5,6 +5,7 @@ import ProductList from './product-list';
 import ProductDetails from './product-details';
 import CartSummary from './cart-summary';
 import CheckoutForm from './checkout-form';
+import ConfirmOrder from './order-confirm';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -12,7 +13,8 @@ export default class App extends React.Component {
     this.state = {
       products: [],
       cart: [],
-      view: { view: 'catalog', params: {} } // details, cart, checkout, catalog
+      orderInfo: {},
+      view: { view: 'catalog', params: {} } // catalog, details, cart, checkout, order-confirm
     };
     this.setView = this.setView.bind(this);
     this.addToCart = this.addToCart.bind(this);
@@ -25,7 +27,10 @@ export default class App extends React.Component {
 
   getProducts() {
     fetch('api/products.php', { method: 'GET' })
-      .then(res => res.json())
+      .then(res => {
+        return res.json();
+      }
+      )
       .then(products => {
         this.setState({ products });
       });
@@ -71,7 +76,7 @@ export default class App extends React.Component {
     })
       .then(res => res.json())
       .then(res => {
-        this.setState({ cart: [], view: { view: 'catalog', params: {} } });
+        this.setState({ orderInfo, view: { view: 'order-confirm', params: {} } });
       });
   }
 
@@ -119,6 +124,12 @@ export default class App extends React.Component {
       case 'catalog':
         appRenderCmp = (
           <ProductList { ...this.state } setView = { this.setView } ></ProductList>
+        );
+        break;
+
+      case 'order-confirm':
+        appRenderCmp = (
+          <ConfirmOrder orderInfo={this.state.orderInfo} cart={this.state.cart} ></ConfirmOrder>
         );
         break;
 
