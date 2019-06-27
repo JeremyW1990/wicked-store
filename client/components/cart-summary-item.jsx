@@ -24,7 +24,7 @@ const CartSummaryItem = props => {
         </div>
 
         <div className="purchase-control d-flex justify-content-around my-4">
-          <div className="quantity-controls  d-flex">
+          <div className="quantity-controls d-flex">
             <i className="fas fa-plus-square" onClick={() => props.changeQuantityInCart(props.id, props.quantity + 1)}></i>
             <input className='quantity-input form-control' onChange={e => { props.changeQuantityInCart(props.id, e.target.value); }} value={props.quantity} type="number"/>
             <i className="fas fa-minus-square" onClick={() => props.changeQuantityInCart(props.id, props.quantity - 1)}></i>

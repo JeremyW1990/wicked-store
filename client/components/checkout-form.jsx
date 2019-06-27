@@ -82,7 +82,7 @@ export default class CheckoutForm extends React.Component {
   onSubmitHandler(event) {
     event.preventDefault();
     if (this.isFormValidated()) {
-      this.props.placeOrder(this.state.formValue);
+      this.props.setView('order-confirm', {});
     }
 
   }

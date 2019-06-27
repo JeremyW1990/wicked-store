@@ -15,7 +15,7 @@ body {
 /* Header */
 
 .header .title {
-    font-size : 5vw;
+    font-size : 3rem;
     font-weight: bold;
     /* text-shadow design is from 
     https://designshack.net/articles/css/12-fun-css-text-shadows-you-can-copy-and-paste/ 
@@ -161,9 +161,41 @@ body {
 
 /* order-confirm */
 
-.deliver-info i {
-  font-size: 10vw;
+.shipping-info .address, 
+.title-order-summary{
+  font-size: 2vw;
+
 }
+.deliver-info i {
+  font-size: 5vw;
+}
+
+.deliver-time {
+  font-size: 1.5vw;
+
+}
+
+.table img {
+  height: 100px;
+  margin-right: 20px;
+}
+
+.table td, .table th {
+  vertical-align: middle;
+  text-align: center;
+}
+.table th {
+  width: 20%;
+}
+
+.table .description{
+  width : 40%;
+}
+
+/* .confirm-button{
+  margin-top: 10px;
+  float: right;
+} */
 
 /* carousel */
 
@@ -181,6 +213,13 @@ body {
   width: 50px;
 } 
 
+
+/* modal */
+
+.modal-content{
+  background-color: #aaa;
+  text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
+}
 
 /* numeric input */
 /* Hide HTML5 Up and Down arrows. */
