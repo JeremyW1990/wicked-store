@@ -29,9 +29,41 @@ export default class App extends React.Component {
                 4,
         shortDescription:
                 'Dragonite is a draconic, bipedal Pokemon with light orange skin. It has large, grayish-green eyes and a round snout with small nostrils.'
+      },
+      {
+        gallery: [
+          'https://i.ya-webdesign.com/images/png-dragonite-13.png',
+          'https://img.rankedboost.com/wp-content/uploads/2018/10/Dragonite-Pokemon-Lets-GO.png',
+          'https://i.pinimg.com/originals/e7/96/ef/e796ef9a767fa96ce1a18d7b8e3bc551.png'],
+        id:
+                '2',
+        image:
+                'https://i.pinimg.com/originals/e7/96/ef/e796ef9a767fa96ce1a18d7b8e3bc551.png',
+        name:
+                'Dragonite2',
+        price:
+                '3000',
+        quantity:
+                4,
+        shortDescription:
+                'Dragonite is a draconic, bipedal Pokemon with light orange skin. It has large, grayish-green eyes and a round snout with small nostrils.'
       }],
-      orderInfo: {},
-      view: { view: 'cart', params: {} } // catalog, details, cart, checkout, order-confirm
+      orderInfo: {
+        address:
+'78 Town',
+
+        city:
+'Irvine',
+        firstname:
+'Jeremy',
+        lastname:
+'Wang',
+        state:
+'California',
+        zip:
+'92620'
+      },
+      view: { view: 'catalog', params: {} } // catalog, details, cart, checkout, order-confirm
     };
     this.setView = this.setView.bind(this);
     this.addToCart = this.addToCart.bind(this);
@@ -109,10 +141,10 @@ export default class App extends React.Component {
     }
   }
 
-  placeOrder(orderInfo) {
+  placeOrder() {
     const postBody = {
       cart: this.state.cart,
-      orderInfo
+      orderInfo: this.state.orderInfo
     };
     fetch('api/orders.php', {
       method: 'POST',
@@ -120,7 +152,7 @@ export default class App extends React.Component {
     })
       .then(res => res.json())
       .then(res => {
-        this.setState({ orderInfo, view: { view: 'order-confirm', params: {} } });
+        this.setState({ orderInfo: {}, cart: [], view: { view: 'catalog', params: {} } });
       });
   }
 
@@ -166,7 +198,7 @@ export default class App extends React.Component {
 
       case 'checkout':
         appRenderCmp = (
-          <CheckoutForm placeOrder={placeOrder}/>
+          <CheckoutForm setView = {setView}/>
         );
         break;
 
@@ -178,7 +210,13 @@ export default class App extends React.Component {
 
       case 'order-confirm':
         appRenderCmp = (
-          <ConfirmOrder orderInfo={orderInfo} cart={ cart} ></ConfirmOrder>
+          <ConfirmOrder
+            orderInfo={orderInfo}
+            cart={cart}
+            view={view}
+            placeOrder = {placeOrder}
+            totalPrice = { calculateTotalPirce()}
+          ></ConfirmOrder>
         );
         break;
 
