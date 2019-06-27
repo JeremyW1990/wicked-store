@@ -11,7 +11,7 @@ const Header = props => {
         { props.name }
       </div>
 
-      <div className="cart-btn ml-auto d-flex align-items-center font-weight-bold btn btn-dark"
+      <div className="cart-btn ml-auto d-flex align-items-center font-weight-bold btn btn-outline-dark font-weight-bold"
         onClick={() => props.setView('cart', {})}>
         <i className="fas fa-cart-plus" ></i>
         <div className="cart-item-count ">

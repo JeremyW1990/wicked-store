@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row, Button, Form, FormGroup, Label, Input, FormFeedback } from 'reactstrap';
+import { Col, Row, Form, FormGroup, Label, Input, FormFeedback } from 'reactstrap';
 
 export default class CheckoutForm extends React.Component {
   constructor(props) {
@@ -193,7 +193,7 @@ export default class CheckoutForm extends React.Component {
             <Input invalid = {checkBoxValid === false} checked={checkBox} type="checkbox" name="check" id="Check" onChange={onChangeHandler}/>
             <Label for="Check" check>I understand that my personal information above will not be saved or sent.</Label>
           </FormGroup>
-          <Button onClick={onSubmitHandler}>Next</Button>
+          <button className=" btn btn-outline-dark font-weight-bold" onClick={onSubmitHandler}>Next</button>
         </Form>
       </React.Fragment>
     );

@@ -20,19 +20,8 @@ export default class Carousel extends React.Component {
     }, 3000);
   }
 
-  clickHander(index, type) {
-    if (type === 'shift') {
-      let nextIndex = this.state.currentIndex + index;
-      if (nextIndex < 0) {
-        nextIndex = this.props.images.length - 1;
-      } else if (nextIndex >= this.props.images.length) {
-        nextIndex = 0;
-      }
-      this.setState({ currentIndex: nextIndex });
-    } else {
-      this.setState({ currentIndex: index });
-    }
-
+  clickHander(index) {
+    this.setState({ currentIndex: index });
   }
 
   componentDidUpdate() {
@@ -42,22 +31,34 @@ export default class Carousel extends React.Component {
   componentDidMount() {
     this.resetTimer();
   }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
   render() {
 
-    const roundButtons = this.props.images.map((iamge, index) => {
-      if (index === this.state.currentIndex) {
-        return <i key={index} className="fas fa-circle"></i>;
-      }
-      return <i key={index} className="far fa-circle" onClick={() => this.clickHander(index, 'jump')} ></i>;
+    const gallery = this.props.images.map((image, index) => {
+
+      let dynamicClass = 'border rounded m-1 p-1';
+      index !== this.state.currentIndex ? dynamicClass += ' border' : dynamicClass += ' border-info';
+      return (
+        <div
+          className={dynamicClass}
+          key={index}
+          onClick={() => this.clickHander(index)}>
+          <img src={image} ></img>
+        </div>);
     });
 
     return (
-      <div className="carousel">
-        <img src={this.props.images[this.state.currentIndex]} alt=""/>
-        <button className="button-left" onClick={() => this.clickHander(-1, 'shift')}>&lt;</button>
-        <button className="button-right" onClick={() => this.clickHander(+1, 'shift')}>&gt;</button>
-        <div className="round-buttons">
-          {roundButtons}
+      <div className="carousel d-flex flex-column justify-content-around align-items-center">
+        <div className="main-image">
+          <img src={this.props.images[this.state.currentIndex]} alt=""/>
+        </div>
+
+        <div className="gallery d-flex">
+          {gallery}
         </div>
       </div>
     );

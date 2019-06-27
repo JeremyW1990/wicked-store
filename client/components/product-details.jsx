@@ -1,5 +1,4 @@
 import React from 'react';
-
 import Carousel from './carousel';
 
 class ProductDetails extends React.Component {
@@ -7,9 +6,17 @@ class ProductDetails extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      product: null
-
+      product: null,
+      quantity: 1
     };
+    this.quantityChangeHanlder = this.quantityChangeHanlder.bind(this);
+  }
+
+  quantityChangeHanlder(quantity) {
+    if (quantity === '') { quantity = 0; }
+    if (quantity >= 0 && quantity <= 99) {
+      this.setState({ quantity });
+    }
   }
 
   componentDidMount() {
@@ -30,43 +37,51 @@ class ProductDetails extends React.Component {
 
   render() {
 
+    const { quantity, product } = this.state;
+    const { quantityChangeHanlder } = this;
+
     let productDetailsDOM = <div>No product detail shown.</div>;
     if (this.state.product) {
       productDetailsDOM = (
         <div className="product-details">
-          <button type="button" className="btn btn-outline-dark font-weight-bold ml-3"
-            onClick={ () => this.props.setView('catalog', {})} >&lt; Back to catalog</button>
+          <button type="button" className="btn btn-outline-dark font-weight-bold mt-4 mb-1 "
+            onClick={ () => this.props.setView('catalog', {})} >
+              &lt; Back to catalog
+          </button>
+
           <div className="border">
             <div className="row">
               <div className="col-sm-6">
                 { this.state.product.gallery !== null
                   ? <Carousel images={this.state.product.gallery}/>
-                  : <img className="mx-auto img-fluid" src={ this.state.product.image } alt="product-image"/> }
+                  : <img className="mx-auto img-fluid" src={ product.image } alt="product-image"/> }
               </div>
 
-              <div className="col-sm-6 basic-info d-flex flex-column">
+              <div className="col-sm-6 basic-info d-flex flex-column ">
                 <div className="name font-weight-bold ">
-                  {this.state.product.name}
+                  {product.name}
                 </div>
                 <div className="price">
-                  <b>Price:</b> ${(this.state.product.price / 100).toFixed(2)}
+                  <b>Price:</b> ${(product.price / 100).toFixed(2)}
                 </div>
                 <div className="short-description">
-                  <b>Description:</b> {this.state.product.shortDescription}
+                  <b>Description:</b> {product.shortDescription}
                 </div>
 
-                <button
-                  className="btn btn-success add-to-cart"
-                  onClick={ () => this.props.addToCart(this.state.product)}>
-                  Add to Cart
-                </button>
+                <div className="purchase-control d-flex justify-content-around">
+                  <div className="quantity-controls  d-flex">
+                    <i className="fas fa-plus-square" onClick={() => quantityChangeHanlder(quantity + 1)}></i>
+                    <input className='quantity-input form-control' onChange={e => { quantityChangeHanlder(e.target.value); }} value={quantity} type="number"/>
+                    <i className="fas fa-minus-square" onClick={() => quantityChangeHanlder(quantity - 1)}></i>
+                  </div>
 
+                  <button
+                    className="btn btn-outline-dark font-weight-bold add-to-cart"
+                    onClick={ () => this.props.addToCart(product, quantity)}>
+                    Add to Cart
+                  </button>
+                </div>
               </div>
-
-            </div>
-
-            <div className="long-description col-12 mt-3">
-              {this.state.product.longDescription}
             </div>
           </div>
         </div>
