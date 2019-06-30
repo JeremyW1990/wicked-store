@@ -13,7 +13,6 @@ class ProductDetails extends React.Component {
   }
 
   quantityChangeHanlder(quantity) {
-    if (quantity === '') { quantity = 0; }
     if (quantity >= 0 && quantity <= 99) {
       this.setState({ quantity });
     }
@@ -49,7 +48,7 @@ class ProductDetails extends React.Component {
               &lt; Back to catalog
           </button>
 
-          <div className="border">
+          <div className="border rounded">
             <div className="row">
               <div className="col-sm-6">
                 { this.state.product.gallery !== null
@@ -58,25 +57,27 @@ class ProductDetails extends React.Component {
               </div>
 
               <div className="col-sm-6 basic-info d-flex flex-column ">
-                <div className="name font-weight-bold ">
+                <div
+                  className="name font-weight-bold">
                   {product.name}
                 </div>
                 <div className="price">
                   <b>Price:</b> ${(product.price / 100).toFixed(2)}
                 </div>
-                <div className="short-description">
+                <div className="description">
                   <b>Description:</b> {product.shortDescription}
                 </div>
 
-                <div className="purchase-control d-flex justify-content-around">
-                  <div className="quantity-controls  d-flex">
-                    <i className="fas fa-plus-square" onClick={() => quantityChangeHanlder(quantity + 1)}></i>
-                    <input className='quantity-input form-control' onChange={e => { quantityChangeHanlder(e.target.value); }} value={quantity} type="number"/>
+                <div className="purchase-control d-flex justify-content-around align-items-center mb-2">
+                  <div className="quantity-controls d-flex">
                     <i className="fas fa-minus-square" onClick={() => quantityChangeHanlder(quantity - 1)}></i>
+                    <input className='quantity-input form-control' onChange={e => { quantityChangeHanlder(e.target.value); }} value={quantity} type="number"/>
+                    <i className="fas fa-plus-square" onClick={() => quantityChangeHanlder(quantity + 1)}></i>
                   </div>
 
                   <button
-                    className="btn btn-outline-dark font-weight-bold add-to-cart"
+                    disabled = {quantity <= 0}
+                    className="btn btn-outline-dark font-weight-bold add-to-cart-btn"
                     onClick={ () => this.props.addToCart(product, quantity)}>
                     Add to Cart
                   </button>
