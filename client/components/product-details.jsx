@@ -10,11 +10,18 @@ class ProductDetails extends React.Component {
       quantity: 1
     };
     this.quantityChangeHanlder = this.quantityChangeHanlder.bind(this);
+    this.quantityOnBlurHander = this.quantityOnBlurHander.bind(this);
   }
 
   quantityChangeHanlder(quantity) {
     if (quantity >= 0 && quantity <= 99) {
       this.setState({ quantity });
+    }
+  }
+
+  quantityOnBlurHander(quantity) {
+    if (quantity === '') {
+      this.setState({ quantity: 1 });
     }
   }
 
@@ -37,7 +44,7 @@ class ProductDetails extends React.Component {
   render() {
 
     const { quantity, product } = this.state;
-    const { quantityChangeHanlder } = this;
+    const { quantityChangeHanlder, quantityOnBlurHander } = this;
 
     let productDetailsDOM = <div>No product detail shown.</div>;
     if (this.state.product) {
@@ -51,9 +58,7 @@ class ProductDetails extends React.Component {
           <div className="border rounded">
             <div className="row">
               <div className="col-sm-6">
-                { this.state.product.gallery !== null
-                  ? <Carousel images={this.state.product.gallery}/>
-                  : <img className="mx-auto img-fluid" src={ product.image } alt="product-image"/> }
+                <Carousel images={this.state.product.gallery}/>
               </div>
 
               <div className="col-sm-6 basic-info d-flex flex-column ">
@@ -71,7 +76,10 @@ class ProductDetails extends React.Component {
                 <div className="purchase-control d-flex justify-content-around align-items-center mb-2">
                   <div className="quantity-controls d-flex">
                     <i className="fas fa-minus-square" onClick={() => quantityChangeHanlder(quantity - 1)}></i>
-                    <input className='quantity-input form-control' onChange={e => { quantityChangeHanlder(e.target.value); }} value={quantity} type="number"/>
+                    <input className='quantity-input form-control'
+                      onChange={e => { quantityChangeHanlder(e.target.value); }}
+                      onBlur={e => { quantityOnBlurHander(e.target.value); }}
+                      value={quantity} type="number"/>
                     <i className="fas fa-plus-square" onClick={() => quantityChangeHanlder(quantity + 1)}></i>
                   </div>
 

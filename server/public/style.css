@@ -52,7 +52,7 @@ body {
 .cart-btn {
   margin-top: auto;
   font-size:1vw;
-  width: 10%;
+  width: 11%;
 }
 
 @media only screen and (max-width: 737px) {
@@ -86,6 +86,7 @@ body {
 }
 
 /* Product List */
+/* Product List Item */
 .product-list .row {
   margin: 1rem 0;
 }
@@ -111,12 +112,19 @@ body {
   
 }
 
+.product-list .info {
+  height: 42%;
+  
+}
+
+
+
 .product-list .image img {
   height: 100%;
 }
 
-.product-list .description,
-.product-list .price {
+.product-list-content .description,
+.product-list-content .price {
   font-size: 1vw;
 }
 
@@ -212,12 +220,22 @@ body {
 
 
 @media only screen and (max-width: 737px) {
+  .product-details .basic-info .name{
+    font-size: 2.7vw;
+  }
+  
+  
+  .product-details .basic-info .price,
+  .product-details .basic-info .description{
+    font-size: 1.8vw;
+  }
+
   .product-details .quantity-input {
     width: 40%;
   }
   
   .product-details .add-to-cart {
-    font-size: 1.5vw;
+    font-size: 1.8vw;
     width: 40%;
   }
 }
@@ -227,12 +245,12 @@ body {
 
 
   .product-details .basic-info .name{
-    font-size: 5vw;
+    font-size: 6vw;
   }
 
   .product-details .basic-info .price,
   .product-details .basic-info .description{
-    font-size: 3vw;
+    font-size: 3.7vw;
   }
 
   .product-details .add-to-cart-btn {
@@ -299,9 +317,28 @@ body {
 }
 
 @media only screen and (max-width: 737px) {
+
+  .cart-summary-item .name {
+    font-size: 2.7vw;
+  }
+  .cart-summary-item .item-info {
+    font-size: 1.8vw;
+  }
+  .cart-summary-item .image img {
+      max-height: 140px;
+  }
+
+  .cart-summary-item .quantity-controls{
+    width: 90%;
+ }
+ 
+  .cart-summary-item .quantity-controls i {
+    font-size: 4vw;
+  }
   
   .cart-summary-item .quantity-input {
-    width: 40%;
+    height: 4vw;
+    width: 30%;
   }
 }
 
@@ -328,7 +365,6 @@ body {
   .cart-summary-item .quantity-input {
     height: 6vw;
     width: 40%;
-    
   }
 }
 
@@ -412,19 +448,19 @@ body {
   height: 200px;
 }
 
-
+.carousel .thumbmail{
+  height: 65px;
+  width: 65px;  
+}
 
 .gallery img{
-  height: 50px;
-  width: 50px;
+  max-height: 55px;
+  width: auto;
+  max-width: 55px;
 } 
 
 
 /* modal */
-
-.modal-content{
-  /* text-shadow: 2px 4px 3px rgba(0,0,0,0.3); */
-}
 
 .modal-dialog {
   top: 30%;

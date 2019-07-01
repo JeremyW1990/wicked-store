@@ -16,8 +16,8 @@ const ProductListItem = props => {
           <div className="price">
             <b>Price:</b> ${(props.price / 100).toFixed(2)}
           </div>
-          <div className="description ">
-            <b>Description:</b> {props.shortDescription.slice(0, 120) + '...'}
+          <div className="description">
+            <b>Description:</b> {props.shortDescription}
           </div>
         </div>
       </div>

@@ -12,43 +12,8 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       products: [],
-      // cart: [{
-      //   gallery: [
-      //     'https://i.ya-webdesign.com/images/png-dragonite-13.png',
-      //     'https://img.rankedboost.com/wp-content/uploads/2018/10/Dragonite-Pokemon-Lets-GO.png',
-      //     'https://i.pinimg.com/originals/e7/96/ef/e796ef9a767fa96ce1a18d7b8e3bc551.png'],
-      //   id:
-      //           '1',
-      //   image:
-      //           'https://i.pinimg.com/originals/e7/96/ef/e796ef9a767fa96ce1a18d7b8e3bc551.png',
-      //   name:
-      //           'Dragonite',
-      //   price:
-      //           '3000',
-      //   quantity:
-      //           4,
-      //   shortDescription:
-      //           'Dragonite is a draconic, bipedal Pokemon with light orange skin. It has large, grayish-green eyes and a round snout with small nostrils.'
-      // }],
       cart: [],
       shippingForm: {},
-      //       shippingForm: {
-      //         address:
-      // '78 Town',
-
-      //         city:
-      // 'Irvine',
-      //         firstname:
-      // 'Jeremy',
-      //         lastname:
-      // 'Wang',
-      //         state:
-      // 'California',
-      //         zip:
-      // '92620',
-      // checkBox: false
-
-      //       },
       view: { view: 'catalog', params: {} } // catalog, details, cart, checkout, order-confirm
     };
     this.setView = this.setView.bind(this);
@@ -59,6 +24,7 @@ export default class App extends React.Component {
     this.calculateTotalPirce = this.calculateTotalPirce.bind(this);
     this.changeQuantityInCart = this.changeQuantityInCart.bind(this);
     this.submitShippingForm = this.submitShippingForm.bind(this);
+    this.quantityOnBlurHander = this.quantityOnBlurHander.bind(this);
   }
 
   setView(name, params) {
@@ -127,6 +93,19 @@ export default class App extends React.Component {
     }
   }
 
+  quantityOnBlurHander(id, quantity) {
+    if (quantity === '') {
+      const cart = this.state.cart.map(item => {
+        if (item.id !== id) return item;
+        return {
+          ...item,
+          quantity: 1
+        };
+      });
+      this.setState({ cart });
+    }
+  }
+
   submitShippingForm(shippingForm) {
     this.setState({ shippingForm });
   }
@@ -147,11 +126,14 @@ export default class App extends React.Component {
   }
 
   calculateTotalPirce() {
-    return this.state.cart.reduce((total, current) => total + parseFloat(current.price * current.quantity), 0);
+    const totolPrice = this.state.cart.reduce((total, current) => total + parseFloat(current.price * current.quantity), 0);
+    return isNaN(totolPrice) || totolPrice === '' ? 0 : totolPrice;
   }
 
   calculateTotalItemsInCart() {
-    return this.state.cart.reduce((total, current) => total + parseInt(current.quantity), 0);
+    const totalItems = this.state.cart.reduce((total, current) => total + parseInt(current.quantity), 0);
+    return isNaN(totalItems) || totalItems === '' ? 0 : totalItems;
+
   }
   componentDidMount() {
     this.getProducts();
@@ -168,7 +150,8 @@ export default class App extends React.Component {
       addToCart,
       changeQuantityInCart,
       deleteItemInCart,
-      submitShippingForm
+      submitShippingForm,
+      quantityOnBlurHander
     } = this;
 
     switch (view.view) {
@@ -190,6 +173,7 @@ export default class App extends React.Component {
             totalPrice = { calculateTotalPirce()}
             changeQuantityInCart = {changeQuantityInCart}
             deleteItemInCart = {deleteItemInCart}
+            quantityOnBlurHander = {quantityOnBlurHander}
           >
           </CartSummary>
         );

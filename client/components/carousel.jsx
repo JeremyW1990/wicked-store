@@ -40,7 +40,7 @@ export default class Carousel extends React.Component {
 
     const gallery = this.props.images.map((image, index) => {
 
-      let dynamicClass = 'border rounded m-1 p-1';
+      let dynamicClass = 'border rounded thumbmail m-1 p-1 d-flex justify-content-center align-items-center';
       index !== this.state.currentIndex ? dynamicClass += ' border' : dynamicClass += ' border-danger';
       return (
         <div

@@ -1,7 +1,9 @@
 import React from 'react';
+
 import CartSummaryItem from './cart-summary-item';
 
 const CartSummary = props => {
+
   return (
     <div className="cart-summary-list">
 
@@ -15,6 +17,7 @@ const CartSummary = props => {
           {...item }
           setView = {props.setView}
           changeQuantityInCart = {props.changeQuantityInCart}
+          quantityOnBlurHander = {props.quantityOnBlurHander}
           deleteItemInCart={props.deleteItemInCart}></CartSummaryItem>
       )}
 
@@ -27,7 +30,6 @@ const CartSummary = props => {
             CHECKOUT
         </button>
       </div>
-
     </div>
 
   );

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+
+import ConfirmModal from '../functions/modal';
 
 const OrderConfirm = props => {
 
@@ -8,10 +9,6 @@ const OrderConfirm = props => {
   const toggle = () => {
     setModal(!modal);
   };
-
-  let deliverTime = new Date();
-  deliverTime.setTime(deliverTime.getTime() + (2 * 24 * 60 * 60 * 1000));
-  deliverTime = deliverTime.toLocaleString();
 
   const filterCart = props.cart.filter(item => item.quantity > 0);
 
@@ -42,7 +39,7 @@ const OrderConfirm = props => {
               Estimate delivery time:
               </div>
               <div>
-                { deliverTime }
+                7 ~ 10 Business Days
               </div>
             </div>
             <i className="fas fa-truck"></i>
@@ -91,16 +88,14 @@ const OrderConfirm = props => {
             onClick={toggle}
           >Confirmed</button>
         </div>
-
-        <Modal isOpen={modal} toggle={toggle} >
-          <ModalHeader toggle={toggle}>Order delivering...</ModalHeader>
-          <ModalBody className="font-weight-bold">
-              This is the end of demo. Thank you!
-          </ModalBody>
-          <ModalFooter>
-            <button className="btn btn-outline-dark font-weight-bold" onClick={props.placeOrder}>Ok</button>{' '}
-          </ModalFooter>
-        </Modal>
+        <ConfirmModal
+          title = "Delivering..."
+          content = "This is the end of the Demo. Thank you!"
+          toggle={toggle}
+          modal={modal}
+          confirm = {props.placeOrder}
+          confirmButton = "OK"
+        />
 
       </div>
     </React.Fragment>
