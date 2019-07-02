@@ -12,57 +12,8 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       products: [],
-      cart: [{
-        gallery: [
-          'https://i.ya-webdesign.com/images/png-dragonite-13.png',
-          'https://img.rankedboost.com/wp-content/uploads/2018/10/Dragonite-Pokemon-Lets-GO.png',
-          'https://i.pinimg.com/originals/e7/96/ef/e796ef9a767fa96ce1a18d7b8e3bc551.png'],
-        id:
-                '1',
-        image:
-                'https://i.pinimg.com/originals/e7/96/ef/e796ef9a767fa96ce1a18d7b8e3bc551.png',
-        name:
-                'Dragonite',
-        price:
-                '3000',
-        quantity:
-                4,
-        shortDescription:
-                'Dragonite is a draconic, bipedal Pokemon with light orange skin. It has large, grayish-green eyes and a round snout with small nostrils.'
-      },
-      {
-        gallery: [
-          'https://i.ya-webdesign.com/images/png-dragonite-13.png',
-          'https://img.rankedboost.com/wp-content/uploads/2018/10/Dragonite-Pokemon-Lets-GO.png',
-          'https://i.pinimg.com/originals/e7/96/ef/e796ef9a767fa96ce1a18d7b8e3bc551.png'],
-        id:
-                '2',
-        image:
-                'https://i.pinimg.com/originals/e7/96/ef/e796ef9a767fa96ce1a18d7b8e3bc551.png',
-        name:
-                'Dragonite2',
-        price:
-                '3000',
-        quantity:
-                4,
-        shortDescription:
-                'Dragonite is a draconic, bipedal Pokemon with light orange skin. It has large, grayish-green eyes and a round snout with small nostrils.'
-      }],
-      orderInfo: {
-        address:
-'78 Town',
-
-        city:
-'Irvine',
-        firstname:
-'Jeremy',
-        lastname:
-'Wang',
-        state:
-'California',
-        zip:
-'92620'
-      },
+      cart: [],
+      shippingForm: {},
       view: { view: 'catalog', params: {} } // catalog, details, cart, checkout, order-confirm
     };
     this.setView = this.setView.bind(this);
@@ -72,6 +23,8 @@ export default class App extends React.Component {
     this.calculateTotalItemsInCart = this.calculateTotalItemsInCart.bind(this);
     this.calculateTotalPirce = this.calculateTotalPirce.bind(this);
     this.changeQuantityInCart = this.changeQuantityInCart.bind(this);
+    this.submitShippingForm = this.submitShippingForm.bind(this);
+    this.quantityOnBlurHander = this.quantityOnBlurHander.bind(this);
   }
 
   setView(name, params) {
@@ -128,7 +81,6 @@ export default class App extends React.Component {
   }
 
   changeQuantityInCart(id, quantity) {
-    if (quantity === '') { quantity = 0; }
     if ((quantity >= 0 && quantity <= 99)) {
       const cart = this.state.cart.map(item => {
         if (item.id !== id) return item;
@@ -141,10 +93,27 @@ export default class App extends React.Component {
     }
   }
 
+  quantityOnBlurHander(id, quantity) {
+    if (quantity === '') {
+      const cart = this.state.cart.map(item => {
+        if (item.id !== id) return item;
+        return {
+          ...item,
+          quantity: 1
+        };
+      });
+      this.setState({ cart });
+    }
+  }
+
+  submitShippingForm(shippingForm) {
+    this.setState({ shippingForm });
+  }
+
   placeOrder() {
     const postBody = {
       cart: this.state.cart,
-      orderInfo: this.state.orderInfo
+      shippingForm: this.state.shippingForm
     };
     fetch('api/orders.php', {
       method: 'POST',
@@ -152,16 +121,19 @@ export default class App extends React.Component {
     })
       .then(res => res.json())
       .then(res => {
-        this.setState({ orderInfo: {}, cart: [], view: { view: 'catalog', params: {} } });
+        this.setState({ shippingForm: {}, cart: [], view: { view: 'catalog', params: {} } });
       });
   }
 
   calculateTotalPirce() {
-    return this.state.cart.reduce((total, current) => total + parseFloat(current.price * current.quantity), 0);
+    const totolPrice = this.state.cart.reduce((total, current) => total + parseFloat(current.price * current.quantity), 0);
+    return isNaN(totolPrice) || totolPrice === '' ? 0 : totolPrice;
   }
 
   calculateTotalItemsInCart() {
-    return this.state.cart.reduce((total, current) => total + parseInt(current.quantity), 0);
+    const totalItems = this.state.cart.reduce((total, current) => total + parseInt(current.quantity), 0);
+    return isNaN(totalItems) || totalItems === '' ? 0 : totalItems;
+
   }
   componentDidMount() {
     this.getProducts();
@@ -169,8 +141,18 @@ export default class App extends React.Component {
 
   render() {
     let appRenderCmp;
-    const { products, cart, orderInfo, view } = this.state;
-    const { setView, calculateTotalPirce, calculateTotalItemsInCart, placeOrder, addToCart, changeQuantityInCart, deleteItemInCart } = this;
+    const { products, cart, shippingForm, view } = this.state;
+    const {
+      setView,
+      calculateTotalPirce,
+      calculateTotalItemsInCart,
+      placeOrder,
+      addToCart,
+      changeQuantityInCart,
+      deleteItemInCart,
+      submitShippingForm,
+      quantityOnBlurHander
+    } = this;
 
     switch (view.view) {
       case 'details':
@@ -191,6 +173,7 @@ export default class App extends React.Component {
             totalPrice = { calculateTotalPirce()}
             changeQuantityInCart = {changeQuantityInCart}
             deleteItemInCart = {deleteItemInCart}
+            quantityOnBlurHander = {quantityOnBlurHander}
           >
           </CartSummary>
         );
@@ -198,22 +181,31 @@ export default class App extends React.Component {
 
       case 'checkout':
         appRenderCmp = (
-          <CheckoutForm setView = {setView}/>
+          <CheckoutForm
+            setView = {setView}
+            submitShippingForm = {submitShippingForm}
+            shippingForm = {shippingForm}
+          >
+          </CheckoutForm>
         );
         break;
 
       case 'catalog':
         appRenderCmp = (
-          <ProductList products = { products } setView = { setView } ></ProductList>
+          <ProductList
+            products = { products }
+            setView = { setView }>
+          </ProductList>
         );
         break;
 
       case 'order-confirm':
         appRenderCmp = (
           <ConfirmOrder
-            orderInfo={orderInfo}
+            shippingForm={shippingForm}
             cart={cart}
             view={view}
+            setView = {setView}
             placeOrder = {placeOrder}
             totalPrice = { calculateTotalPirce()}
           ></ConfirmOrder>
