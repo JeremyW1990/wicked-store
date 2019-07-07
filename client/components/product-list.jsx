@@ -1,6 +1,8 @@
 import React from 'react';
 import ProductListItem from './product-list-item';
-
+/*
+  this component is for rendering product list infomation in home page
+*/
 const ProductList = props => {
 
   return (

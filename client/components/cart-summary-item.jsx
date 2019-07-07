@@ -2,13 +2,23 @@ import React, { useState } from 'react';
 
 import ConfirmModal from '../functions/modal';
 
+/*
+  this compoent is for rendering each different item in cart page
+*/
 const CartSummaryItem = props => {
 
+  /*
+    use react hook to control the delete confirm modal
+  */
   const [modal, setModal] = useState(false);
   const toggle = () => {
     setModal(!modal);
   };
 
+  /*
+    fire the event when user confirms to delete the item in the cart
+    and close modal
+  */
   const removeItemConfirm = () => {
     props.deleteItemInCart(props.id);
     setModal(false);
@@ -55,6 +65,10 @@ const CartSummaryItem = props => {
           </button>
         </div>
 
+        {/*
+          pass all the props dynamically to modal,
+          dynamically render different content and config action logic
+        */}
         <ConfirmModal
           title = "Item Remove Confirm"
           content = "You sure you want to remove this item from cart?"

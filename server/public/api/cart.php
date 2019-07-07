@@ -1,5 +1,8 @@
 <?php
-
+/* 
+  This endpoint is not yet been called from frontend
+  For test purpose
+*/
 header('Content-Type: application/json');
 
 $method = $_SERVER['REQUEST_METHOD'];
@@ -17,5 +20,5 @@ if ($method == 'GET') {
     'message' => "Cannot $method /api/cart.php"
   ]));
 }
-
+ 
 ?>

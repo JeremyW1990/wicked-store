@@ -1,5 +1,9 @@
 import React from 'react';
 
+/*
+  Carousel display
+  Used in product detail page
+*/
 export default class Carousel extends React.Component {
   constructor(props) {
     super(props);
@@ -9,6 +13,9 @@ export default class Carousel extends React.Component {
     this.timer = null;
   }
 
+  /*
+    Reset the timer of carousel display
+  */
   resetTimer() {
     clearInterval(this.timer);
     this.timer = setInterval(() => {
@@ -17,9 +24,12 @@ export default class Carousel extends React.Component {
           currentIndex: prevState.currentIndex >= this.props.images.length - 1 ? 0 : prevState.currentIndex + 1
         };
       });
-    }, 3000);
+    }, 1500);
   }
 
+  /*
+    jump to a certain image when user click that thumbnail
+  */
   clickHander(index) {
     this.setState({ currentIndex: index });
   }
@@ -32,6 +42,9 @@ export default class Carousel extends React.Component {
     this.resetTimer();
   }
 
+  /*
+    clear timer when component unmount, to prevent memory leak
+  */
   componentWillUnmount() {
     clearInterval(this.timer);
   }
@@ -41,6 +54,10 @@ export default class Carousel extends React.Component {
     const gallery = this.props.images.map((image, index) => {
 
       let dynamicClass = 'border rounded thumbmail m-1 p-1 d-flex justify-content-center align-items-center';
+      /*
+        dynamically change css of images
+        highlight the thumbnail image when it is dispalyed as main image
+      */
       index !== this.state.currentIndex ? dynamicClass += ' border' : dynamicClass += ' border-danger';
       return (
         <div

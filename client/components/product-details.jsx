@@ -1,6 +1,10 @@
 import React from 'react';
 import Carousel from './carousel';
 
+/*
+  this component is for rendering product detail page
+*/
+
 class ProductDetails extends React.Component {
 
   constructor(props) {
@@ -13,18 +17,31 @@ class ProductDetails extends React.Component {
     this.quantityOnBlurHander = this.quantityOnBlurHander.bind(this);
   }
 
+  /*
+    update quantity according to user input
+  */
   quantityChangeHanlder(quantity) {
-    if (quantity >= 0 && quantity <= 99) {
-      this.setState({ quantity });
-    }
+    /*
+      Guard
+      we only allow customer buy 99 in a single purchase
+    */
+    if (quantity < 0 || quantity > 99) return;
+    this.setState({ quantity });
   }
 
+  /*
+    When user leave the quantity input field but leave it blank,
+    the quantity will be reset to 1
+  */
   quantityOnBlurHander(quantity) {
     if (quantity === '') {
       this.setState({ quantity: 1 });
     }
   }
 
+  /*
+    fetch the product info according to id
+  */
   componentDidMount() {
     fetch(`api/products.php?id=${this.props.params}`, {
       method: 'GET'
@@ -43,11 +60,15 @@ class ProductDetails extends React.Component {
 
   render() {
 
+    /*
+      deconstructing here to make render method neat and clean
+    */
+
     const { quantity, product } = this.state;
     const { quantityChangeHanlder, quantityOnBlurHander } = this;
 
     let productDetailsDOM = <div>No product detail shown.</div>;
-    if (this.state.product) {
+    if (product) {
       productDetailsDOM = (
         <div className="product-details">
           <button type="button" className="btn btn-outline-dark font-weight-bold mt-4 mb-1 "
@@ -58,7 +79,7 @@ class ProductDetails extends React.Component {
           <div className="border rounded">
             <div className="row">
               <div className="col-sm-6">
-                <Carousel images={this.state.product.gallery}/>
+                <Carousel images={product.gallery}/>
               </div>
 
               <div className="col-sm-6 basic-info d-flex flex-column ">

@@ -6,8 +6,10 @@ export default class CheckoutForm extends React.Component {
     super(props);
     this.state = {
       isInputValid: {
-        // use status 'null' here to present 'not-touched'
-        // 'null' will not trigger input validation
+        /*
+          use status 'null' here to present 'not-touched'
+          'null' will not trigger input validation
+        */
         firstnameValid: null,
         lastnameValid: null,
         addressValid: null,
@@ -27,6 +29,10 @@ export default class CheckoutForm extends React.Component {
       },
       formValidated: false
     };
+
+    /*
+      validation rules
+    */
     this.validationRules = {
       firstname: { required: true },
       lastname: { required: true },
@@ -46,6 +52,11 @@ export default class CheckoutForm extends React.Component {
   onChangeHandler(event) {
     const filed = event.target.name;
 
+    /*
+      Guard for checkbox;
+      value update logic is different from normal input field
+      handle seperately here
+    */
     if (filed === 'check') {
       this.setState({
         ...this.state,
@@ -67,8 +78,12 @@ export default class CheckoutForm extends React.Component {
         ...this.state.formValue,
         [filed]: event.target.value
       }
-
     }, () => {
+      /*
+        In setState callback block here
+        After value update, asynchronously
+        check the new value validation
+      */
       this.setState({
         ...this.state,
         isInputValid: {
@@ -79,6 +94,11 @@ export default class CheckoutForm extends React.Component {
     });
   }
 
+  /*
+    When user clicks submit button,
+    pass to form value to app state,
+    and redirect to order-confirm page
+  */
   onSubmitHandler(event) {
     event.preventDefault();
     if (this.isFormValidated()) {
@@ -88,21 +108,35 @@ export default class CheckoutForm extends React.Component {
 
   }
 
+  /*
+    change validation of a certain field,
+    update to state
+  */
   isFieldValidated(field) {
     if (field === 'checkBox') return this.state.formValue.checkBox;
-    if (this.validationRules[field]['required'] && this.state.formValue[field].trim() === '') return false;
-    if (this.validationRules[field]['length'] && this.state.formValue[field].trim().length !== this.validationRules[field]['length']) return false;
+
+    if (this.validationRules[field]['required'] &&
+      this.state.formValue[field].trim() === '') return false;
+
+    if (this.validationRules[field]['length'] &&
+      this.state.formValue[field].trim().length !== this.validationRules[field]['length']) return false;
 
     return true;
   }
 
+  /*
+    Check the validation of the entire form
+  */
   isFormValidated() {
     const isInputValid = { ...this.state.isInputValid };
     let formValidated = true;
     for (const field in this.state.formValue) {
       isInputValid[field + 'Valid'] = this.isFieldValidated(field);
     }
-    // validated here again to prevent a bug when user back to this page, all validation status is null
+
+    /*
+      validated here again to prevent a bug when user navigate back to this page, all validation status is null
+    */
     for (const field in this.state.isInputValid) {
       if (!isInputValid[field]) { // whenever it is null or false, we think the input is invalid
         formValidated = false;

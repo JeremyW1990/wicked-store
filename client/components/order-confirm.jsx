@@ -2,14 +2,28 @@ import React, { useState } from 'react';
 
 import ConfirmModal from '../functions/modal';
 
+/*
+  this component is for rendering order summary page
+  including cart and shipping information
+*/
+
 const OrderConfirm = props => {
 
+  /*
+    use react hook to control the end of demo confirm modal
+  */
   const [modal, setModal] = useState(false);
 
   const toggle = () => {
     setModal(!modal);
   };
 
+  /*
+    We filter the cart list again here because there is case that user edit some of products to 0 before they submit
+    We don't want to show any 0 quantity here.
+    If all the items are 0 quantity, user won't be again to submit and navigate to this page
+
+  */
   const filterCart = props.cart.filter(item => item.quantity > 0);
 
   return (
