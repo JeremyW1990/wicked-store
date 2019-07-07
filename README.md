@@ -1,48 +1,50 @@
 # wicked-sales
 
-A full stack LAMP & React shopping cart app.
+A full stack LAMP & React shopping cart app.</br>
+url: https://wicked-sales.jeremywang.dev/
 
 ## Introduction
 
-For this project, you will be building a single-page React application and a dynamic PHP API.
+- For this project, you will see a single-page React application and a dynamic PHP API.
+- It is a mock online shopping cart app. 
+- Your personal information will not be saved and order will not be delivered.
 
-## Getting Started
+## Getting Local Installed
 
-1. Fork this repository to your GitHub account and clone the fork to your local `lfz` directory.
-2. Check out a `dev` branch and push it to `origin`.
+1. Fork this repository to your GitHub account.
+2. Clone the fork to your local directory.
     ```
-    git push origin dev
+    git clone https://github.com/[Your_GitHub_Name]/wicked-sales
     ```
-3. Install all dependencies in `package.json` with NPM.
+3. Navigate to your local directory. 
+   Install all dependencies in `package.json` with NPM.
     ```
     npm install
     ```
-4. Add the `wicked-sales.localhost` site to Apache by copying the provided virtual host configuration in the `server` directory to `/etc/apache2/sites-available`.
-    ```
-    sudo cp server/wicked-sales.localhost.conf /etc/apache2/sites-available
-    ```
-5. Enable the `wicked-sales.locahost` site.
-   ```
-   sudo a2ensite wicked-sales.localhost
-   ```
-6. Restart the Apache web server.
-   ```
-   sudo service apache2 restart
-   ```
-7. Test that the virtual host is working by sending an HTTP request to `http://wicked-sales.localhost`. You should receive `200 OK` response containing an HTML document with the title of "Wicked Sales".
-   ```
-   http get http://wicked-sales.localhost
-   ```
+4. Create a new mysql database called 'wicked-sales'
 
-## Features
+5. Import file `mysql_dump.sql` under folder `/database` in the local directory to 'wicked-sales' database
 
-There are [Markdown](https://guides.github.com/features/mastering-markdown/) files located in the `features` directory of this project that contain useful links and task lists for each feature of the application.
+6. Rename `db_connection.php.config` under folder `/server/public/api` in local directory to `db_connection.php`
+   ```
+   sudo cp server/public/api/db_connection.php.config server/public/api/db_connection.php
+   ```
+7. Open `db_connection.php`, change `'atabase'` to `'wicked-sales'`, change `'hostname'`, `'username'`, `'password'` to your local mysql config. </br>**NOTE**: Keep the single quote.
 
-For each Markdown file, create a new Issue on your fork's GitHub repository and paste the content of the Markdown file into the **first** comment box. Give the Issue a clear title (usually the heading at the top of the Markdown file).
+8. Start the Apache web server
+   ```
+   sudo service apache2 start
+   ```
+9. Start the local MySQL database 
+   ```
+   sudo service mysql start
+   ```
+10. Run project locally. You should receive `｢wdm｣: Compiled successfully.` in the terminal.
+   ```
+   npm run dev
+   ```
+11. Open your browser, navigate to `http://localhost:3000/`. You should be seeing the app.
 
-**Note**: GitHub automatically assigns Issue numbers when you open them. The numbers that GitHub gives your Issues are not meaningful in any way other than unique identification, so the order that you open Issues doesn't really matter. It _does_ matter what order you work on each feature for the project. The name of each Markdown file in `features` includes a number designating the order in which they should be implemented.
-
-As you work through each task of a given feature, make a commit. It's good to get into the habit of making incremental progress on a project. Each commit message that you write should be concise, but descriptive enough that another developer can guess what you did in the code without having to actually read the code.
 
 ## NPM Scripts
 

@@ -1,21 +1,28 @@
 import React from 'react';
 
+/*
+  this component is for rendering each product infomation in home page
+*/
+
 const ProductListItem = props => {
   return (
 
-    <div className="product-list-item border col-12 col-sm-4 d-flex" onClick = {() => props.setView('details', props.id)}>
-      <div className="border product-item-content overflow-hidden my-auto container">
-        <div className="image">
-          <img className="mx-auto d-block img-fluid" src={ props.image } alt="product-image"/>
+    <div className="product-list-item col-12 col-sm-4 mb-1"
+      onClick = {() => props.setView('details', props.id)}>
+      <div className="product-item-content border rounded overflow-hidden px-2 mr-1 growable">
+        <div className="image mt-2">
+          <img className="mx-auto d-block img-fluid " src={ props.image } alt="product-image"/>
         </div>
-        <div className="name font-weight-bold">
-          {props.name}
-        </div>
-        <div className="price">
-                    ${props.price}
-        </div>
-        <div className="short-description">
-          {props.shortDescription}
+        <div className="info mx-2">
+          <div className="name font-weight-bold">
+            {props.name}
+          </div>
+          <div className="price">
+            <b>Price:</b> ${(props.price / 100).toFixed(2)}
+          </div>
+          <div className="description">
+            <b>Description:</b> {props.shortDescription}
+          </div>
         </div>
       </div>
 

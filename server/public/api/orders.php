@@ -1,5 +1,10 @@
 <?php
 
+/* 
+  This endpoint is not yet been called from frontend
+  For test purpose
+*/
+
 header('Content-Type: application/json');
 
 $method = $_SERVER['REQUEST_METHOD'];
