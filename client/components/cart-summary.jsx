@@ -2,6 +2,10 @@ import React from 'react';
 
 import CartSummaryItem from './cart-summary-item';
 
+/*
+  this component is for rendering the cart page
+*/
+
 const CartSummary = props => {
 
   return (

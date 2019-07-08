@@ -1,5 +1,10 @@
 import React from 'react';
 
+/*
+  this component is for rendering header
+  contains title and cart item quantity information
+*/
+
 const Header = props => {
   return (
     <div className="header d-flex align-items-center">
