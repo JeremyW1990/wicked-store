@@ -14,7 +14,7 @@ Website: https://wicked-sales.jeremywang.dev/
 1. Fork this repository to your GitHub account.
 2. Clone the fork to your local directory.
     ```
-    git clone https://github.com/[Your_GitHub_Name]/wicked-sales
+    git clone https://github.com/[Your_GitHub_Name]/wicked-store
     ```
 3. Navigate to your local directory. 
    Install all dependencies in `package.json` with NPM.
